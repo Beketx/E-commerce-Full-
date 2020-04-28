@@ -24,7 +24,7 @@ def products_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response({'error': wrong})
+        return Response({'error': 'wrong'})
 @api_view(['GET','PUT','DELETE'])
 def product_detail(request, product_id):
     product = get_object_or_404(Product,id=product_id)
@@ -44,7 +44,7 @@ def product_detail(request, product_id):
 class CategoryAPIView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerailizer
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
 
 class CategoryDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
@@ -88,3 +88,7 @@ def cart_list(request, pk=None):
         item = Cart.objects.get(id=pk)
         item.delete()
         return Response('Done')
+
+class CartProductsAPIView(generics.ListCreateAPIView):
+    queryset = Cart.objects.all()
+    serializer_class = CartProductsSerializer

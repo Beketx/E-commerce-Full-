@@ -4,7 +4,7 @@ from api.models import*
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['name','count','description','image','price','category_id']
+        fields = ['name','count','description','price','category_id','cartitem']
 
 class CategorySerailizer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
@@ -17,8 +17,8 @@ class CategorySerailizer(serializers.Serializer):
         instance.save()
         return instance
 
-class CategoryWithProductsSerializer(serializers.Serializer):
-    pass
+# class CategoryWithProductsSerializer(serializers.Serializer):
+#     pass
 #     products = serializers.StringRelatedField(many=True,read_only=True)
 #     class Meta:
 #         model = Cart
@@ -32,10 +32,16 @@ class FeedbackSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = ['created_by','date','subtotal','order_item']
+        fields = ['created_by','date','subtotal']
 
 # class CartWithProductsSerializer(serializers.Serializer):
 #     products = serializers.StringRelatedField(many=True,read_only=True)
 #     class Meta:
 #         model = Cart
 #         fields = ['created_by','products']
+
+class CartProductsSerializer(serializers.ModelSerializer):
+    products = serializers.StringRelatedField(many=True, read_only=True)
+    class Meta:
+        model = Cart
+        fields = '__all__'
